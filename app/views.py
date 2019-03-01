@@ -29,6 +29,13 @@ def about():
     return render_template('about.html')
 
 
+@app.route('/secure-page')
+@login_required
+def secure_page():
+    return render_template('secure_page.html')
+"""Render a secure page on our website that only logged in users can access."""
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
@@ -62,12 +69,12 @@ def login():
             flash('Logged in successfully.', 'success')
 
             next_page = request.args.get('next')
-            return redirect(next_page or url_for('home'))
+            return redirect(url_for('home'))
         else:
             flash('Username or Password is incorrect.', 'danger')
-            return redirect(next_page or url_for('/secure-page'))
+            return redirect(url_for('secure_page'))
             
-    flash.flash_errors(form)
+    #flash_errors(form)
     return render_template('login.html', form=form)
                 
             #login_user(user)
